@@ -112,11 +112,11 @@
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center 
-           px-4 py-2 rounded-xl font-medium
+           rounded-xl font-medium
            transition-all duration-200 ease-out
            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-surface-900
-           disabled:opacity-50 disabled:cursor-not-allowed
-           w-auto sm:w-auto;  /* Make buttons responsive */
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    height: 2.5rem; /* 40px */
   }
   
   /* Primary Button */
@@ -126,14 +126,6 @@
            focus:ring-primary-500/20
            dark:focus:ring-primary-500/30
            border border-transparent;
-    
-    &:hover {
-      @apply transform -translate-y-0.5 shadow-lg;
-    }
-    
-    &:active {
-      @apply transform translate-y-0 shadow-none;
-    }
   }
   
   /* Secondary Button */
@@ -147,7 +139,7 @@
 
   /* Ghost Button */
   .btn-ghost {
-    @apply bg-transparent text-surface-600
+    @apply bg-surface-50 text-surface-600
            hover:bg-surface-100 active:bg-surface-200
            dark:text-surface-400 
            dark:hover:bg-surface-800 dark:active:bg-surface-700;
@@ -163,31 +155,21 @@
     
     > :last-child {
       @apply rounded-l-none border-l
-             px-2
              border-primary-600/20 dark:border-primary-400/20;
     }
   }
 
-  .card {
-    @apply bg-white dark:bg-slate-800 
-           rounded-xl shadow-sm
-           border border-gray-100 dark:border-gray-700
-           transition-all duration-200 ease-out
-           hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600
-           w-full;  /* Make cards full width on mobile */
-  }
-  
   .input {
-    @apply w-full px-4 py-2 
-           bg-white dark:bg-slate-800
+    @apply w-full px-4
+           bg-white dark:bg-surface-800
            border border-gray-200 dark:border-gray-700
            rounded-xl
            transition-all duration-200
            placeholder:text-gray-400
            focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500
            dark:focus:ring-primary-500/30 dark:focus:border-primary-500
-           dark:text-white
-           text-base sm:text-sm;  /* Adjust input text size for mobile */
+           dark:text-white;
+    height: 2.5rem; /* 40px */
   }
 }
 
@@ -238,6 +220,26 @@
 
   .card {
     @apply mx-0;
+  }
+
+  /* Hide view mode icons on mobile */
+  .finder-toolbar-view-modes {
+    display: none;
+  }
+
+  /* Mobile toolbar styles */
+  .btn-split {
+    width: 100%;
+  }
+
+  .btn-split button:first-child {
+    flex: 1;
+  }
+
+  /* Ensure sort button takes full width on mobile */
+  .btn-ghost {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 

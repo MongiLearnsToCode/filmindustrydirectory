@@ -148,6 +148,24 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="py-16 text-center">
+          <div className="mb-8 flex justify-center">
+            <Image
+              src="/fortune-well-yellow.svg"
+              alt="Fortune Well"
+              width={200}
+              height={133}
+              className="hidden dark:block"
+              priority
+            />
+            <Image
+              src="/fortune-well-dark.svg"
+              alt="Fortune Well"
+              width={200}
+              height={133}
+              className="block dark:hidden"
+              priority
+            />
+          </div>
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             Welcome to Industry Directory
           </h1>

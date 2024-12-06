@@ -105,13 +105,12 @@ export default function FinderToolbar({
   return (
     <div className="sticky top-0 z-50 backdrop-blur-sm bg-white/80 dark:bg-surface-900/80 border-b border-surface-200/50 dark:border-surface-700/50">
       <div className="h-16 px-6 flex items-center gap-4">
-        {/* Left Section: Add Contact Button and Search */}
-        <div className="flex items-center gap-4 flex-1">
-          {/* Add Contact Button Group */}
-          <div className="btn-split relative shrink-0" ref={addMenuRef}>
+        {/* Add Contact Button Group */}
+        <div className="shrink-0">
+          <div className="btn-split relative" ref={addMenuRef}>
             <button
               onClick={() => setShowAddModal(true)}
-              className="btn btn-primary"
+              className="btn btn-primary h-10 px-4"
               aria-label="Add new contact"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +120,7 @@ export default function FinderToolbar({
             </button>
             <button
               onClick={() => setShowAddMenu(!showAddMenu)}
-              className="btn btn-primary"
+              className="btn btn-primary h-10 px-2"
               aria-label="More add options"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +138,7 @@ export default function FinderToolbar({
                     setShowAddMenu(false);
                   }}
                   className="w-full px-4 py-2 text-sm text-left text-surface-700 dark:text-surface-300
-                             hover:bg-surface-100 dark:hover:bg-surface-700 flex items-center"
+                                 hover:bg-surface-100 dark:hover:bg-surface-700 flex items-center"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -153,7 +152,7 @@ export default function FinderToolbar({
                     setShowAddMenu(false);
                   }}
                   className="w-full px-4 py-2 text-sm text-left text-surface-700 dark:text-surface-300
-                             hover:bg-surface-100 dark:hover:bg-surface-700 flex items-center"
+                                 hover:bg-surface-100 dark:hover:bg-surface-700 flex items-center"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
@@ -164,10 +163,12 @@ export default function FinderToolbar({
               </div>
             )}
           </div>
+        </div>
 
-          {/* Search Bar */}
-          <div className="relative flex-1 max-w-md">
-            <svg className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" 
+        {/* Search Bar */}
+        <div className="relative flex-1 max-w-2xl">
+          <div className="relative flex items-center">
+            <svg className="absolute left-3 w-5 h-5 text-gray-400 pointer-events-none" 
                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -177,7 +178,7 @@ export default function FinderToolbar({
               placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white dark:bg-surface-800 
+              className="w-full h-10 pl-10 pr-4 bg-white dark:bg-surface-800 
                      border border-gray-200 dark:border-surface-700 
                      rounded-xl
                      transition-all duration-200
@@ -187,142 +188,142 @@ export default function FinderToolbar({
                      dark:text-white"
             />
             {isSearching && (
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="absolute right-3">
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-primary-500" />
               </div>
             )}
           </div>
-
-          {/* Right Section: View Options */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* View Toggle */}
-            <div className="flex items-center bg-surface-100 dark:bg-surface-800 rounded-xl p-1">
-              <button
-                onClick={() => onViewChange?.('grid')}
-                className={`p-2 rounded-lg transition-colors ${
-                  currentView === 'grid'
-                    ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-                }`}
-                aria-label="Grid view"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-              </button>
-              <button
-                onClick={() => onViewChange?.('list')}
-                className={`p-2 rounded-lg transition-colors ${
-                  currentView === 'list'
-                    ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-                }`}
-                aria-label="List view"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-              </button>
-              <button
-                onClick={() => onViewChange?.('columns')}
-                className={`p-2 rounded-lg transition-colors ${
-                  currentView === 'columns'
-                    ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                    : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-                }`}
-                aria-label="Column view"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Sort Button */}
-            <div className="relative">
-              <button
-                ref={sortButtonRef}
-                onClick={() => setShowSortMenu(!showSortMenu)}
-                className="btn btn-ghost"
-                aria-label="Sort and group options"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9M3 12h9m-9 4h9" />
-                </svg>
-                {currentSort === 'none' ? 'Sort & Group' : `Sort by ${currentSort}`}
-              </button>
-
-              {/* Sort/Group Menu */}
-              {showSortMenu && (
-                <div className="absolute right-0 mt-2 w-56 rounded-lg bg-white dark:bg-surface-800 shadow-lg 
-                               ring-1 ring-surface-200 dark:ring-surface-700 divide-y divide-surface-100 dark:divide-surface-700">
-                  <div className="py-1">
-                    <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
-                      Sort by
-                    </div>
-                    {menuItems
-                      .filter(item => item.type === 'sort')
-                      .map((item, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleMenuItemClick(item)}
-                          className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
-                                    ${currentSort === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
-                        >
-                          {item.label}
-                          {currentSort === item.value && (
-                            <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
-                          )}
-                        </button>
-                      ))}
-                  </div>
-                  
-                  <div className="py-1">
-                    <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
-                      Group by
-                    </div>
-                    {menuItems
-                      .filter(item => item.type === 'group')
-                      .map((item, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleMenuItemClick(item)}
-                          className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
-                                    ${groupBy === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
-                        >
-                          {item.label}
-                          {groupBy === item.value && (
-                            <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
-                          )}
-                        </button>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
 
-        {/* Modals */}
-        {showAddModal && (
-          <AddContactModal
-            isOpen={showAddModal}
-            onClose={() => setShowAddModal(false)}
-            onSave={onAddContact}
-          />
-        )}
+        {/* Right Section: View and Sort Options */}
+        <div className="flex items-center gap-2">
+          {/* View Toggle */}
+          <div className="finder-toolbar-view-modes flex items-center bg-surface-50 dark:bg-surface-800 rounded-xl p-1 h-10">
+            <button
+              onClick={() => onViewChange?.('grid')}
+              className={`p-2 rounded-lg transition-colors ${
+                currentView === 'grid'
+                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
+                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
+              }`}
+              aria-label="Grid view"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => onViewChange?.('list')}
+              className={`p-2 rounded-lg transition-colors ${
+                currentView === 'list'
+                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
+                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
+              }`}
+              aria-label="List view"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+            <button
+              onClick={() => onViewChange?.('columns')}
+              className={`p-2 rounded-lg transition-colors ${
+                currentView === 'columns'
+                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
+                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
+              }`}
+              aria-label="Column view"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+              </svg>
+            </button>
+          </div>
 
-        {showCsvModal && (
-          <CsvUploadModal
-            isOpen={showCsvModal}
-            onClose={() => setShowCsvModal(false)}
-            onUpload={onAddContacts}
-          />
-        )}
+          {/* Sort & Group Button */}
+          <button
+            ref={sortButtonRef}
+            onClick={() => setShowSortMenu(!showSortMenu)}
+            className="btn btn-ghost h-10 px-4 bg-surface-50 dark:bg-surface-800"
+            aria-label="Sort and group options"
+          >
+            <div className="flex items-center">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9M3 12h9m-9 4h9" />
+              </svg>
+              Sort & Group
+            </div>
+          </button>
+
+          {/* Sort/Group Menu */}
+          {showSortMenu && (
+            <div className="absolute right-0 mt-2 w-56 rounded-lg bg-white dark:bg-surface-800 shadow-lg 
+                           ring-1 ring-surface-200 dark:ring-surface-700 divide-y divide-surface-100 dark:divide-surface-700">
+              <div className="py-1">
+                <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
+                  Sort by
+                </div>
+                {menuItems
+                  .filter(item => item.type === 'sort')
+                  .map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleMenuItemClick(item)}
+                      className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
+                                      ${currentSort === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
+                    >
+                      {item.label}
+                      {currentSort === item.value && (
+                        <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
+                      )}
+                    </button>
+                  ))}
+              </div>
+              
+              <div className="py-1">
+                <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
+                  Group by
+                </div>
+                {menuItems
+                  .filter(item => item.type === 'group')
+                  .map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleMenuItemClick(item)}
+                      className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
+                                      ${groupBy === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
+                    >
+                      {item.label}
+                      {groupBy === item.value && (
+                        <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
+                      )}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Modals */}
+      {showAddModal && (
+        <AddContactModal
+          isOpen={showAddModal}
+          onClose={() => setShowAddModal(false)}
+          onSave={onAddContact}
+        />
+      )}
+
+      {showCsvModal && (
+        <CsvUploadModal
+          isOpen={showCsvModal}
+          onClose={() => setShowCsvModal(false)}
+          onUpload={onAddContacts}
+        />
+      )}
     </div>
   );
 }
