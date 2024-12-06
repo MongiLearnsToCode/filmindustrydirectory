@@ -52,94 +52,114 @@ export default function AddContactModal({ isOpen, onClose, onSave }: AddContactM
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Add New Contact</h2>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-surface-800 rounded-xl shadow-xl w-full max-w-md
+                     border border-surface-200 dark:border-surface-700
+                     transform transition-all duration-200
+                     animate-in fade-in slide-in-from-bottom-4">
+        <div className="flex justify-between items-center p-6 border-b border-surface-200 dark:border-surface-700">
+          <h2 className="text-xl font-semibold text-surface-900 dark:text-white">Add New Contact</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="btn btn-ghost p-1 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
         
         <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
+          <div className="p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Name *</label>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Name <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                className="input"
+                placeholder="Enter name"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email *</label>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Email <span className="text-red-500">*</span>
+              </label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                className="input"
+                placeholder="Enter email"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700">Company *</label>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Company <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 required
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                className="input"
+                placeholder="Enter company name"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700">Country</label>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Country
+              </label>
               <input
                 type="text"
                 value={formData.country}
                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                className="input"
+                placeholder="Enter country"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700">Industry</label>
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
+                Industry
+              </label>
               <input
                 type="text"
                 value={formData.industry}
                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                className="input"
+                placeholder="Enter industry"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1">
                 Tags
-                <span className="text-sm font-normal text-gray-500 ml-1">(Press Enter or comma to add)</span>
+                <span className="text-sm font-normal text-surface-500 ml-1">(Press Enter or comma to add)</span>
               </label>
-              <div className="mt-1">
-                <div className="flex flex-wrap gap-2 mb-2">
+              <div className="space-y-2">
+                <div className="flex flex-wrap gap-2">
                   {formData.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+                      className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-sm
+                               bg-primary-50 text-primary-700 border border-primary-100
+                               dark:bg-primary-500/10 dark:text-primary-400 dark:border-primary-500/20"
                     >
                       {tag}
                       <button
                         type="button"
                         onClick={() => handleRemoveTag(tag)}
-                        className="ml-1 inline-flex items-center p-0.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-600"
+                        className="ml-1.5 hover:text-primary-900 dark:hover:text-primary-300"
                       >
-                        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
@@ -152,23 +172,23 @@ export default function AddContactModal({ isOpen, onClose, onSave }: AddContactM
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleAddTag}
                   placeholder="Add tags..."
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                  className="input"
                 />
               </div>
             </div>
           </div>
           
-          <div className="mt-6 flex justify-end space-x-3">
+          <div className="flex justify-end gap-3 p-6 border-t border-surface-200 dark:border-surface-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="btn btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700"
+              className="btn btn-primary"
             >
               Add Contact
             </button>
