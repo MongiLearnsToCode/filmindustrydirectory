@@ -1,5 +1,7 @@
 # Media Industry Directory
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/39c617bb-8ab3-42be-8433-4558819c810e/deploy-status)](https://app.netlify.com/sites/industry-contacts/deploys)
+
 A beautiful and feature-rich directory application for media industry contacts.
 
 ## Features
