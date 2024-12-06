@@ -5,38 +5,29 @@ import CsvUploadModal from './CsvUploadModal';
 import { Contact } from '../types/contact';
 
 interface FinderToolbarProps {
-  currentPath: string;
-  onViewChange?: (view: 'grid' | 'list' | 'columns') => void;
+  currentPath?: string;
+  onViewChange: (view: 'grid' | 'list' | 'columns') => void;
   currentView?: 'grid' | 'list' | 'columns';
   onSearch: (query: string) => void;
-  groupBy: 'none' | 'country' | 'company' | 'industry';
-  onGroupByChange: (value: 'none' | 'country' | 'company' | 'industry') => void;
   onAddContact: (contact: Omit<Contact, 'id'>) => void;
   onAddContacts: (contacts: Omit<Contact, 'id'>[]) => void;
-  onSortChange?: (value: 'none' | 'name' | 'company' | 'country') => void;
-  currentSort?: 'none' | 'name' | 'company' | 'country';
+  onSort: (field: string) => void;
+  onGroup: (field: string) => void;
+  currentSort?: string;
+  currentGroup?: string;
 }
-
-type SortOption = 'none' | 'name' | 'company' | 'country';
-type GroupByOption = 'none' | 'country' | 'company' | 'industry';
-
-type MenuItem = {
-  type: 'sort' | 'group' | 'divider';
-  value?: string;
-  label?: string;
-};
 
 export default function FinderToolbar({ 
   currentPath, 
   onViewChange,
   currentView = 'grid',
   onSearch,
-  groupBy,
-  onGroupByChange,
   onAddContact,
   onAddContacts,
-  onSortChange,
-  currentSort = 'none'
+  onSort,
+  onGroup,
+  currentSort = 'name',
+  currentGroup = 'none',
 }: FinderToolbarProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -44,8 +35,10 @@ export default function FinderToolbar({
   const [showCsvModal, setShowCsvModal] = useState(false);
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
+  const [showGroupMenu, setShowGroupMenu] = useState(false);
   const addMenuRef = useRef<HTMLDivElement>(null);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
+  const groupMenuRef = useRef<HTMLDivElement>(null);
 
   // Handle click outside to close menus
   useEffect(() => {
@@ -53,8 +46,11 @@ export default function FinderToolbar({
       if (addMenuRef.current && !addMenuRef.current.contains(event.target as Node)) {
         setShowAddMenu(false);
       }
-      if (sortButtonRef.current && !sortButtonRef.current.contains(event.target as Node)) {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
         setShowSortMenu(false);
+      }
+      if (groupMenuRef.current && !groupMenuRef.current.contains(event.target as Node)) {
+        setShowGroupMenu(false);
       }
     }
 
@@ -63,31 +59,6 @@ export default function FinderToolbar({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // Menu items including both sort and group options
-  const menuItems: MenuItem[] = [
-    { type: 'sort', value: 'none', label: 'None' },
-    { type: 'sort', value: 'name', label: 'Name' },
-    { type: 'sort', value: 'company', label: 'Company' },
-    { type: 'sort', value: 'country', label: 'Country' },
-    { type: 'divider' },
-    { type: 'group', value: 'none', label: 'No Grouping' },
-    { type: 'group', value: 'country', label: 'Group by Country' },
-    { type: 'group', value: 'company', label: 'Group by Company' },
-    { type: 'group', value: 'industry', label: 'Group by Industry' }
-  ];
-
-  const handleMenuItemClick = (item: MenuItem) => {
-    if (!item.value) return;
-    
-    if (item.type === 'sort') {
-      console.log('Setting sort to:', item.value);
-      onSortChange?.(item.value as SortOption);
-    } else if (item.type === 'group') {
-      onGroupByChange(item.value as GroupByOption);
-    }
-    setShowSortMenu(false);
-  };
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
@@ -104,13 +75,14 @@ export default function FinderToolbar({
 
   return (
     <div className="sticky top-0 z-50 backdrop-blur-sm bg-white/80 dark:bg-surface-900/80 border-b border-surface-200/50 dark:border-surface-700/50">
-      <div className="h-16 px-6 flex items-center gap-4">
-        {/* Add Contact Button Group */}
-        <div className="shrink-0">
-          <div className="btn-split relative" ref={addMenuRef}>
+      {/* Mobile layout - flex column on small screens */}
+      <div className="p-4 flex flex-col sm:flex-row sm:items-center sm:h-16 sm:px-6 gap-3">
+        {/* Add Contact Button Group - full width on mobile */}
+        <div className="w-full sm:w-auto sm:shrink-0">
+          <div className="btn-split relative w-full sm:w-auto" ref={addMenuRef}>
             <button
               onClick={() => setShowAddModal(true)}
-              className="btn btn-primary h-10 px-4"
+              className="btn btn-primary h-10 px-4 flex-1 sm:flex-auto"
               aria-label="Add new contact"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,146 +137,134 @@ export default function FinderToolbar({
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative flex-1 max-w-2xl">
-          <div className="relative flex items-center">
-            <svg className="absolute left-3 w-5 h-5 text-gray-400 pointer-events-none" 
-                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+        {/* Search, Sort, and Group Controls */}
+        <div className="flex-1 min-w-0 flex items-center space-x-2">
+          {/* Search Input */}
+          <div className="flex-1 relative">
             <input
               type="text"
-              placeholder="Search contacts..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 bg-white dark:bg-surface-800 
-                     border border-gray-200 dark:border-surface-700 
-                     rounded-xl
-                     transition-all duration-200
-                     placeholder:text-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500
-                     dark:focus:ring-primary-500/30 dark:focus:border-primary-500
-                     dark:text-white"
+              placeholder="Search contacts..."
+              className="input pr-10 w-full"
             />
-            {isSearching && (
-              <div className="absolute right-3">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-primary-500" />
-              </div>
-            )}
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              {isSearching ? (
+                <svg className="animate-spin h-5 w-5 text-surface-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : (
+                <svg className="h-5 w-5 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              )}
+            </div>
+          </div>
+
+          {/* Sort and Group Controls Container */}
+          <div className="flex items-center space-x-1">
+            {/* Sort Control */}
+            <div className="relative" ref={sortMenuRef}>
+              <button
+                onClick={() => setShowSortMenu(!showSortMenu)}
+                className="btn btn-ghost h-10 px-2"
+                aria-label="Sort options"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                </svg>
+                <span className="text-sm">{currentSort.charAt(0).toUpperCase() + currentSort.slice(1)}</span>
+              </button>
+              {showSortMenu && (
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white dark:bg-surface-800 
+                               shadow-lg ring-1 ring-surface-200 dark:ring-surface-700 py-1 z-50">
+                  {['name', 'company', 'dateAdded', 'dateModified', 'industry'].map((field) => (
+                    <button
+                      key={field}
+                      className={`w-full px-4 py-2 text-sm text-left ${
+                        currentSort === field 
+                          ? 'text-primary-600 dark:text-primary-400 bg-surface-100 dark:bg-surface-700'
+                          : 'text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700'
+                      }`}
+                      onClick={() => {
+                        onSort(field);
+                        setShowSortMenu(false);
+                      }}
+                    >
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Group Control */}
+            <div className="relative" ref={groupMenuRef}>
+              <button
+                onClick={() => setShowGroupMenu(!showGroupMenu)}
+                className="btn btn-ghost h-10 px-2"
+                aria-label="Group options"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span className="text-sm">{currentGroup === 'none' ? 'No Groups' : currentGroup.charAt(0).toUpperCase() + currentGroup.slice(1)}</span>
+              </button>
+              {showGroupMenu && (
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white dark:bg-surface-800 
+                               shadow-lg ring-1 ring-surface-200 dark:ring-surface-700 py-1 z-50">
+                  {['none', 'industry', 'company', 'country'].map((field) => (
+                    <button
+                      key={field}
+                      className={`w-full px-4 py-2 text-sm text-left ${
+                        currentGroup === field 
+                          ? 'text-primary-600 dark:text-primary-400 bg-surface-100 dark:bg-surface-700'
+                          : 'text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700'
+                      }`}
+                      onClick={() => {
+                        onGroup(field);
+                        setShowGroupMenu(false);
+                      }}
+                    >
+                      {field === 'none' ? 'No Groups' : field.charAt(0).toUpperCase() + field.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Right Section: View and Sort Options */}
-        <div className="flex items-center gap-2">
-          {/* View Toggle */}
-          <div className="finder-toolbar-view-modes flex items-center bg-surface-50 dark:bg-surface-800 rounded-xl p-1 h-10">
-            <button
-              onClick={() => onViewChange?.('grid')}
-              className={`p-2 rounded-lg transition-colors ${
-                currentView === 'grid'
-                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-              }`}
-              aria-label="Grid view"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => onViewChange?.('list')}
-              className={`p-2 rounded-lg transition-colors ${
-                currentView === 'list'
-                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-              }`}
-              aria-label="List view"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
-            </button>
-            <button
-              onClick={() => onViewChange?.('columns')}
-              className={`p-2 rounded-lg transition-colors ${
-                currentView === 'columns'
-                  ? 'bg-white dark:bg-surface-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                  : 'text-surface-600 dark:text-surface-400 hover:bg-white/50 dark:hover:bg-surface-700/50'
-              }`}
-              aria-label="Column view"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Sort & Group Button */}
-          <button
-            ref={sortButtonRef}
-            onClick={() => setShowSortMenu(!showSortMenu)}
-            className="btn btn-ghost h-10 px-4 bg-surface-50 dark:bg-surface-800"
-            aria-label="Sort and group options"
+        {/* View Controls */}
+        <div className="flex items-center space-x-2">
+          <IconButton
+            onClick={() => onViewChange('grid')}
+            active={currentView === 'grid'}
+            aria-label="Grid view"
           >
-            <div className="flex items-center">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9M3 12h9m-9 4h9" />
-              </svg>
-              Sort & Group
-            </div>
-          </button>
-
-          {/* Sort/Group Menu */}
-          {showSortMenu && (
-            <div className="absolute right-0 mt-2 w-56 rounded-lg bg-white dark:bg-surface-800 shadow-lg 
-                           ring-1 ring-surface-200 dark:ring-surface-700 divide-y divide-surface-100 dark:divide-surface-700">
-              <div className="py-1">
-                <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
-                  Sort by
-                </div>
-                {menuItems
-                  .filter(item => item.type === 'sort')
-                  .map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleMenuItemClick(item)}
-                      className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
-                                      ${currentSort === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
-                    >
-                      {item.label}
-                      {currentSort === item.value && (
-                        <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
-                      )}
-                    </button>
-                  ))}
-              </div>
-              
-              <div className="py-1">
-                <div className="px-3 py-2 text-xs font-semibold text-surface-500 dark:text-surface-400">
-                  Group by
-                </div>
-                {menuItems
-                  .filter(item => item.type === 'group')
-                  .map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleMenuItemClick(item)}
-                      className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-100 dark:hover:bg-surface-700
-                                      ${groupBy === item.value ? 'text-primary-600 dark:text-primary-400' : 'text-surface-700 dark:text-surface-300'}`}
-                    >
-                      {item.label}
-                      {groupBy === item.value && (
-                        <span className="absolute right-2 text-primary-600 dark:text-primary-400">✓</span>
-                      )}
-                    </button>
-                  ))}
-              </div>
-            </div>
-          )}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </IconButton>
+          <IconButton
+            onClick={() => onViewChange('list')}
+            active={currentView === 'list'}
+            aria-label="List view"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+          </IconButton>
+          <IconButton
+            onClick={() => onViewChange('columns')}
+            active={currentView === 'columns'}
+            aria-label="Column view"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+            </svg>
+          </IconButton>
         </div>
       </div>
 
@@ -316,7 +276,6 @@ export default function FinderToolbar({
           onSave={onAddContact}
         />
       )}
-
       {showCsvModal && (
         <CsvUploadModal
           isOpen={showCsvModal}

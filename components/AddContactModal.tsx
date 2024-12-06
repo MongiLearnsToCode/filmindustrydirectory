@@ -17,9 +17,11 @@ export default function AddContactModal({ isOpen, onClose, onSave }: AddContactM
     tags: [] as string[]
   });
   const [tagInput, setTagInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     onSave({
       ...formData,
       dateCreated: new Date().toISOString(),
@@ -29,6 +31,7 @@ export default function AddContactModal({ isOpen, onClose, onSave }: AddContactM
     onClose();
     setFormData({ name: '', email: '', company: '', country: '', industry: '', tags: [] });
     setTagInput('');
+    setIsLoading(false);
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -178,19 +181,20 @@ export default function AddContactModal({ isOpen, onClose, onSave }: AddContactM
             </div>
           </div>
           
-          <div className="flex justify-end gap-3 p-6 border-t border-surface-200 dark:border-surface-700">
+          <div className="mt-4 flex justify-end space-x-2 p-6 border-t border-surface-200 dark:border-surface-700">
             <button
               type="button"
+              className="btn btn-ghost"
               onClick={onClose}
-              className="btn btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={isLoading}
             >
-              Add Contact
+              {isLoading ? 'Adding...' : 'Add Contact'}
             </button>
           </div>
         </form>

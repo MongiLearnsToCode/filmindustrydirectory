@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { ContactsData, Contact } from '../types/contact';
 import ContactCard from '../components/ContactCard';
-import GroupedContacts from '../components/GroupedContacts';
 import FinderToolbar from '../components/FinderToolbar';
 import Toast from '../components/Toast';
 import contactsData from '../data/contacts.json';
@@ -15,17 +14,15 @@ type HistoryAction = {
   previousContact?: Contact;
 };
 
-type SortOption = 'none' | 'name' | 'company' | 'country';
-
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>((contactsData as ContactsData).contacts);
   const [searchQuery, setSearchQuery] = useState('');
-  const [groupBy, setGroupBy] = useState<'none' | 'country' | 'company' | 'industry'>('none');
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'columns'>('grid');
-  const [currentSort, setCurrentSort] = useState<SortOption>('none');
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [history, setHistory] = useState<HistoryAction[]>([]);
   const [toast, setToast] = useState<{ message: string; action?: () => void } | null>(null);
+  const [sortField, setSortField] = useState<string>('name');
+  const [groupField, setGroupField] = useState<string>('none');
 
   const addToHistory = (action: HistoryAction) => {
     setHistory(prev => [...prev, action]);
@@ -106,42 +103,49 @@ export default function Home() {
     }
   };
 
-  const sortContacts = (contacts: Contact[], sortOption: SortOption): Contact[] => {
-    if (sortOption === 'none') return contacts;
-
+  const sortContacts = (contacts: Contact[], field: string) => {
     return [...contacts].sort((a, b) => {
-      switch (sortOption) {
-        case 'name':
-          return (a.name || '').localeCompare(b.name || '');
-        case 'company':
-          return (a.company || '').localeCompare(b.company || '');
-        case 'country':
-          return (a.country || '').localeCompare(b.country || '');
-        default:
-          return 0;
-      }
+      const aValue = a[field as keyof Contact] || '';
+      const bValue = b[field as keyof Contact] || '';
+      return String(aValue).localeCompare(String(bValue));
     });
   };
 
-  const handleSortChange = (sortOption: SortOption) => {
-    console.log('Sorting by:', sortOption);  
-    setCurrentSort(sortOption);
+  const groupContacts = (contacts: Contact[], field: string) => {
+    if (field === 'none') return { 'All Contacts': contacts };
+    
+    return contacts.reduce((groups: { [key: string]: Contact[] }, contact) => {
+      const value = (contact[field as keyof Contact] as string) || 'Other';
+      if (!groups[value]) {
+        groups[value] = [];
+      }
+      groups[value].push(contact);
+      return groups;
+    }, {});
   };
 
-  // Filter and sort contacts
-  const filteredContacts = contacts.filter(contact => 
-    !searchQuery || 
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (contact.company && contact.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (contact.country && contact.country.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const handleSort = (field: string) => {
+    setSortField(field);
+  };
 
-  // Log the state for debugging
-  console.log('Current sort:', currentSort);
-  console.log('Current group:', groupBy);
+  const handleGroup = (field: string) => {
+    setGroupField(field);
+  };
 
-  const filteredAndSortedContacts = sortContacts(filteredContacts, currentSort);
+  // Apply sorting and filtering
+  const filteredContacts = contacts.filter(contact => {
+    if (!searchQuery) return true;
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      contact.name.toLowerCase().includes(searchLower) ||
+      contact.email.toLowerCase().includes(searchLower) ||
+      contact.company.toLowerCase().includes(searchLower) ||
+      (contact.industry && contact.industry.toLowerCase().includes(searchLower))
+    );
+  });
+
+  const sortedContacts = sortContacts(filteredContacts, sortField);
+  const groupedContacts = groupContacts(sortedContacts, groupField);
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-900">
@@ -192,31 +196,57 @@ export default function Home() {
 
         {/* Main Content */}
         <FinderToolbar
-          currentPath="/"
           onViewChange={setViewMode}
           currentView={viewMode}
           onSearch={setSearchQuery}
-          groupBy={groupBy}
-          onGroupByChange={setGroupBy}
           onAddContact={handleAddContact}
           onAddContacts={handleAddContacts}
-          onSortChange={handleSortChange}
-          currentSort={currentSort}
+          onSort={handleSort}
+          onGroup={handleGroup}
+          currentSort={sortField}
+          currentGroup={groupField}
         />
         
-        <div className="py-8">
-          {filteredAndSortedContacts.length > 0 ? (
-            <GroupedContacts 
-              contacts={filteredAndSortedContacts} 
-              groupBy={groupBy} 
-              viewMode={viewMode}
-              onEditContact={handleEditContact}
-              onDeleteContact={handleDeleteContact}
-            />
-          ) : (
-            <div className="text-center text-gray-500 dark:text-gray-400">
-              No contacts found
+        <div className={`p-4 ${viewMode === 'columns' ? 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4' : ''}`}>
+          {groupField === 'none' ? (
+            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : ''}>
+              {sortedContacts.map(contact => (
+                <ContactCard
+                  key={contact.id}
+                  contact={contact}
+                  viewMode={viewMode}
+                  onEdit={handleEditContact}
+                  onDelete={handleDeleteContact}
+                />
+              ))}
             </div>
+          ) : (
+            Object.entries(groupedContacts).map(([group, contacts]) => (
+              <div key={group} className="mb-8">
+                <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm py-4">
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {group}
+                    </h2>
+                    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      {contacts.length} contacts
+                    </span>
+                  </div>
+                </div>
+                <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : ''}>
+                  {contacts.map(contact => (
+                    <ContactCard
+                      key={contact.id}
+                      contact={contact}
+                      viewMode={viewMode}
+                      onEdit={handleEditContact}
+                      onDelete={handleDeleteContact}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))
           )}
         </div>
       </div>

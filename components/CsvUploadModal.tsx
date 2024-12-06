@@ -135,12 +135,20 @@ export default function CsvUploadModal({ isOpen, onClose, onUpload }: CsvUploadM
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 p-6 border-t border-surface-200 dark:border-surface-700">
+        <div className="mt-4 flex justify-end space-x-2 p-6 border-t border-surface-200 dark:border-surface-700">
           <button
+            type="button"
+            className="btn btn-ghost"
             onClick={onClose}
-            className="btn btn-secondary"
           >
             Cancel
+          </button>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={false}
+          >
+            Upload
           </button>
         </div>
       </div>
