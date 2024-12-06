@@ -68,9 +68,15 @@ export default function GroupedContacts({
   }
 
   const groupedContacts = contacts.reduce((groups, contact) => {
-    const key = groupBy === 'country' ? contact.country :
-                groupBy === 'company' ? contact.company :
-                contact.industry || 'Other';
+    let key = 'Other';
+    
+    if (groupBy === 'country' && contact.country) {
+      key = contact.country;
+    } else if (groupBy === 'company' && contact.company) {
+      key = contact.company;
+    } else if (groupBy === 'industry' && contact.industry) {
+      key = contact.industry;
+    }
                 
     if (!groups[key]) {
       groups[key] = [];
@@ -79,8 +85,15 @@ export default function GroupedContacts({
     return groups;
   }, {} as Record<string, Contact[]>);
 
-  // Sort groups alphabetically
-  const sortedGroups = Object.entries(groupedContacts).sort(([a], [b]) => a.localeCompare(b));
+  console.log('Grouped contacts:', Object.keys(groupedContacts));
+
+  // Sort groups alphabetically and ensure 'Other' is always last
+  const sortedGroups = Object.entries(groupedContacts)
+    .sort(([a], [b]) => {
+      if (a === 'Other') return 1;
+      if (b === 'Other') return -1;
+      return a.localeCompare(b);
+    });
 
   return (
     <div className="space-y-8">

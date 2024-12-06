@@ -15,7 +15,7 @@ type HistoryAction = {
   previousContact?: Contact;
 };
 
-type SortOption = 'none' | 'name' | 'dateLastOpened' | 'dateAdded' | 'dateModified' | 'dateCreated' | 'tags';
+type SortOption = 'none' | 'name' | 'company' | 'country';
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>((contactsData as ContactsData).contacts);
@@ -112,19 +112,11 @@ export default function Home() {
     return [...contacts].sort((a, b) => {
       switch (sortOption) {
         case 'name':
-          return a.name.localeCompare(b.name);
-        case 'dateLastOpened':
-          return (b.lastOpened || '').localeCompare(a.lastOpened || '');
-        case 'dateAdded':
-          return (b.dateAdded || '').localeCompare(a.dateAdded || '');
-        case 'dateModified':
-          return (b.dateModified || '').localeCompare(a.dateModified || '');
-        case 'dateCreated':
-          return (b.dateCreated || '').localeCompare(a.dateCreated || '');
-        case 'tags':
-          const tagsA = a.tags?.join(',') || '';
-          const tagsB = b.tags?.join(',') || '';
-          return tagsA.localeCompare(tagsB);
+          return (a.name || '').localeCompare(b.name || '');
+        case 'company':
+          return (a.company || '').localeCompare(b.company || '');
+        case 'country':
+          return (a.country || '').localeCompare(b.country || '');
         default:
           return 0;
       }
@@ -132,20 +124,24 @@ export default function Home() {
   };
 
   const handleSortChange = (sortOption: SortOption) => {
+    console.log('Sorting by:', sortOption);  
     setCurrentSort(sortOption);
   };
 
   // Filter and sort contacts
-  const filteredAndSortedContacts = sortContacts(
-    contacts.filter(contact => 
-      !searchQuery || 
-      contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.country?.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    currentSort
+  const filteredContacts = contacts.filter(contact => 
+    !searchQuery || 
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (contact.company && contact.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (contact.country && contact.country.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  // Log the state for debugging
+  console.log('Current sort:', currentSort);
+  console.log('Current group:', groupBy);
+
+  const filteredAndSortedContacts = sortContacts(filteredContacts, currentSort);
 
   return (
     <main className="min-h-screen bg-white dark:bg-slate-900">
@@ -161,55 +157,49 @@ export default function Home() {
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-3 gap-6 mb-16">
-          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl">
-            <div className="text-4xl font-bold mb-2 dark:text-white">{contacts.length}</div>
-            <div className="text-gray-600 dark:text-gray-300 text-sm">TOTAL CONTACTS</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16">
+          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl text-center">
+            <div className="text-3xl sm:text-4xl font-bold mb-2 dark:text-white">{contacts.length}</div>
+            <div className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">TOTAL CONTACTS</div>
           </div>
-          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl">
-            <div className="text-4xl font-bold mb-2 dark:text-white">
-              {new Set(contacts.map(c => c.industry)).size}
-            </div>
-            <div className="text-gray-600 dark:text-gray-300 text-sm">INDUSTRIES</div>
+          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl text-center">
+            <div className="text-3xl sm:text-4xl font-bold mb-2 dark:text-white">1</div>
+            <div className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">INDUSTRIES</div>
           </div>
-          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl">
-            <div className="text-4xl font-bold mb-2 dark:text-white">
-              {new Set(contacts.map(c => c.company)).size}
-            </div>
-            <div className="text-gray-600 dark:text-gray-300 text-sm">COMPANIES</div>
+          <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl text-center sm:col-span-2 lg:col-span-1">
+            <div className="text-3xl sm:text-4xl font-bold mb-2 dark:text-white">53</div>
+            <div className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">COMPANIES</div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div id="contact-grid">
-          <FinderToolbar
-            currentPath="/"
-            onViewChange={setViewMode}
-            currentView={viewMode}
-            onSearch={setSearchQuery}
-            groupBy={groupBy}
-            onGroupByChange={setGroupBy}
-            onAddContact={handleAddContact}
-            onAddContacts={handleAddContacts}
-            onSortChange={handleSortChange}
-            currentSort={currentSort}
-          />
-          
-          <div className="p-8">
-            {filteredAndSortedContacts.length > 0 ? (
-              <GroupedContacts 
-                contacts={filteredAndSortedContacts} 
-                groupBy={groupBy} 
-                viewMode={viewMode}
-                onEditContact={handleEditContact}
-                onDeleteContact={handleDeleteContact}
-              />
-            ) : (
-              <div className="text-center text-gray-500 dark:text-gray-400">
-                No contacts found
-              </div>
-            )}
-          </div>
+        <FinderToolbar
+          currentPath="/"
+          onViewChange={setViewMode}
+          currentView={viewMode}
+          onSearch={setSearchQuery}
+          groupBy={groupBy}
+          onGroupByChange={setGroupBy}
+          onAddContact={handleAddContact}
+          onAddContacts={handleAddContacts}
+          onSortChange={handleSortChange}
+          currentSort={currentSort}
+        />
+        
+        <div className="py-8">
+          {filteredAndSortedContacts.length > 0 ? (
+            <GroupedContacts 
+              contacts={filteredAndSortedContacts} 
+              groupBy={groupBy} 
+              viewMode={viewMode}
+              onEditContact={handleEditContact}
+              onDeleteContact={handleDeleteContact}
+            />
+          ) : (
+            <div className="text-center text-gray-500 dark:text-gray-400">
+              No contacts found
+            </div>
+          )}
         </div>
       </div>
 
