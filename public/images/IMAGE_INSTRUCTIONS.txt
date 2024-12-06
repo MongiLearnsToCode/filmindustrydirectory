@@ -1,0 +1,14 @@
+For hero-networking.jpg:
+
+Please add a professional stock image that represents networking or professional connections. Recommended characteristics:
+
+1. Resolution: At least 1920x1080px
+2. Style: Modern, abstract visualization of networks/connections
+3. Suggested content:
+   - Abstract network visualization
+   - Connected nodes/dots with lines
+   - Modern business/tech aesthetic
+   - Neutral colors (blues, grays, whites)
+4. Placement: /public/images/hero-networking.jpg
+
+The image should be subtle enough not to distract from the UI while adding visual interest to the hero section.

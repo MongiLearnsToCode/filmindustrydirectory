@@ -1,0 +1,389 @@
+{
+  "contacts": [
+    {
+      "id": "1",
+      "name": "Vishal Kanungo",
+      "email": "vishal@aeroplaymedia.com",
+      "company": "AEROPLAY ENTERTAINMENT",
+      "country": "India"
+    },
+    {
+      "id": "2",
+      "name": "Gaouad Moktar",
+      "email": "moktar.gaouad@gmail.com",
+      "company": "AFRICA PRIME / AFRICA TODAY TV",
+      "country": "South Africa"
+    },
+    {
+      "id": "3",
+      "name": "Anne Sato",
+      "email": "anne.sato@akilinetwork.com",
+      "company": "AKILINETWORK",
+      "country": "Kenya"
+    },
+    {
+      "id": "4",
+      "name": "Billy Dundee",
+      "email": "billy@entertain.africa",
+      "company": "AMERICAN CINEMA INSPIRES & AFRICAN ENTERTAINMENT DISTRIBUTORS",
+      "country": "South Africa"
+    },
+    {
+      "id": "5",
+      "name": "John Parr",
+      "email": "John.Parr@anuvu.com",
+      "company": "ANUVU",
+      "country": "United States"
+    },
+    {
+      "id": "6",
+      "name": "Vernon Matzopoulos",
+      "email": "Vernon@arena.africa",
+      "company": "ARENA BROADCAST",
+      "country": "South Africa"
+    },
+    {
+      "id": "7",
+      "name": "Eddie Chitate",
+      "email": "eddie@brainstorment.co.za",
+      "company": "BRAINSTORM ENTERTAINMENT MEDIA",
+      "country": "South Africa"
+    },
+    {
+      "id": "8",
+      "name": "Karen Thorne",
+      "email": "karen@capetowntv.org",
+      "company": "CAPE TOWN TV",
+      "country": "South Africa"
+    },
+    {
+      "id": "9",
+      "name": "Awoua Keita",
+      "email": "awoua.keita@coteouest.ci",
+      "company": "COTE OUEST / MEDIAWAN",
+      "country": "Ivory Coast"
+    },
+    {
+      "id": "10",
+      "name": "Cilliers Niemann",
+      "email": "cilliers.niemann@digitalvirgo.com",
+      "company": "DIGITAL VIRGO",
+      "country": "South Africa"
+    },
+    {
+      "id": "11",
+      "name": "Khululeka Khumalo",
+      "email": "khululeka@icloud.com",
+      "company": "ESWATINI TV",
+      "country": "Eswatini"
+    },
+    {
+      "id": "12",
+      "name": "Mpumelelo Mnisi",
+      "email": "mnizlz2000@gmail.com",
+      "company": "ESWATINI TV",
+      "country": "Eswatini"
+    },
+    {
+      "id": "13",
+      "name": "Thembelihle Nyathi",
+      "email": "thembi@exceptionalrights.com",
+      "company": "EXCEPTIONAL RIGHTS",
+      "country": "South Africa"
+    },
+    {
+      "id": "14",
+      "name": "David de Bie",
+      "email": "d.debie@fcce.tv",
+      "company": "FCCE",
+      "country": "Netherlands"
+    },
+    {
+      "id": "15",
+      "name": "Adita Jain",
+      "email": "adita.jain@in10media.com",
+      "company": "IN10 MEDIAI DOCUBAY MEDIA",
+      "country": "India"
+    },
+    {
+      "id": "16",
+      "name": "Rehima Awol",
+      "email": "rehima.awol@kanatelevision.com",
+      "company": "KANA TELEVISION",
+      "country": "Ethiopia"
+    },
+    {
+      "id": "17",
+      "name": "Rohit Gupta",
+      "email": "rohit@manoranjanaira.com",
+      "company": "MANORANJANA IRA",
+      "country": "India"
+    },
+    {
+      "id": "18",
+      "name": "Ricky Anokye",
+      "email": "rickyanokye@gmail.com",
+      "company": "MAX TV",
+      "country": "Ghana"
+    },
+    {
+      "id": "19",
+      "name": "Miriam Osei Agyemang",
+      "email": "miriam.agyemang@mediageneralgh.com",
+      "company": "MEDIA GENERAL LIMITED",
+      "country": "Ghana"
+    },
+    {
+      "id": "20",
+      "name": "Laarni Yu",
+      "email": "Laarni_Yu@abs-cbn.com",
+      "company": "ABS-CBN CORPORATION",
+      "country": "Philippines"
+    },
+    {
+      "id": "21",
+      "name": "Chevonne O'Shaughnessy",
+      "email": "chevonne@americancinemainspires.com",
+      "company": "ACI INSPIRES / AFRICAN ENTERTAINMENT DISTRIBUTORS",
+      "country": "United States"
+    },
+    {
+      "id": "22",
+      "name": "Thomas Devlin",
+      "email": "tom@es.tv",
+      "company": "ALLEN MEDIA",
+      "country": "United States"
+    },
+    {
+      "id": "23",
+      "name": "Doruk Yenihayat",
+      "email": "doruk.yenihayat@atv.com.tr",
+      "company": "ATV DISTRIBUTION",
+      "country": "Turkey"
+    },
+    {
+      "id": "24",
+      "name": "Yokow Quansah",
+      "email": "yokow@broadsmart.co.za",
+      "company": "BROADSMART",
+      "country": "South Africa"
+    },
+    {
+      "id": "25",
+      "name": "Elisa Brough",
+      "email": "elisajb@candlelightmedia.com",
+      "company": "CANDLELIGHT MEDIA GROUP",
+      "country": "United States"
+    },
+    {
+      "id": "26",
+      "name": "Michael Aldridge",
+      "email": "mike@capetowntv.org",
+      "company": "CAPE TOWN TV",
+      "country": "South Africa"
+    },
+    {
+      "id": "27",
+      "name": "Lucile Avezard",
+      "email": "lucile.avezard@fedent.com",
+      "company": "FEDERATION STUDIOS",
+      "country": "France"
+    },
+    {
+      "id": "28",
+      "name": "Alejandro Veciana",
+      "email": "aveciana@filmrise.com",
+      "company": "FILMRISE",
+      "country": "United States"
+    },
+    {
+      "id": "29",
+      "name": "James Ebenezer",
+      "email": "ebenezer.james@geophilmedia.com",
+      "company": "GEOPHIL",
+      "country": "Nigeria"
+    },
+    {
+      "id": "30",
+      "name": "Miroslav Radojevic",
+      "email": "miroslav@theglobalagency.tv",
+      "company": "GLOBAL AGENCY - GLOBAL TELIF",
+      "country": "Turkey"
+    },
+    {
+      "id": "31",
+      "name": "Bruce Rabinowitz",
+      "email": "bruce1@nyc.rr.com",
+      "company": "IMPACT(ED) INTERNATIONAL",
+      "country": "United States"
+    },
+    {
+      "id": "32",
+      "name": "Neşet Ersoy",
+      "email": "neset.ersoy@intermedya.tv",
+      "company": "INTER MEDYA HİZ TİC A.Ş.",
+      "country": "Turkey"
+    },
+    {
+      "id": "33",
+      "name": "Danny Pickett",
+      "email": "danny.pickett@inverleigh.com",
+      "company": "INVERLEIGH",
+      "country": "Australia"
+    },
+    {
+      "id": "34",
+      "name": "Girts Licis",
+      "email": "girts.licis@itv.com",
+      "company": "ITV STUDIOS GLOBAL PARTNERSHIPS",
+      "country": "United Kingdom"
+    },
+    {
+      "id": "35",
+      "name": "Mark James",
+      "email": "mjames@lionsgate.com",
+      "company": "LIONSGATE",
+      "country": "United States"
+    },
+    {
+      "id": "36",
+      "name": "Ebubekir Talha Erdogan",
+      "email": "bekir.erdogan@themediahub.tv",
+      "company": "MEDIAHUB MEDYA",
+      "country": "Turkey"
+    },
+    {
+      "id": "37",
+      "name": "Celina Villarreal",
+      "email": "celina.villarreal@moonbug.com",
+      "company": "MOONBUG ENTERTAINMENT",
+      "country": "United States"
+    },
+    {
+      "id": "38",
+      "name": "Mauro Black",
+      "email": "Mauro.Black@dstvmedia.com",
+      "company": "MULTICHOICE STUDIOS",
+      "country": "South Africa"
+    },
+    {
+      "id": "39",
+      "name": "Justin Gaston",
+      "email": "justin@urbanhomeent.com",
+      "company": "ONE CULTURE/ URBAN HOME ENTERTAINMENT",
+      "country": "United States"
+    },
+    {
+      "id": "40",
+      "name": "Sonal Gupta",
+      "email": "sonalgupta@onelifestudios.in",
+      "company": "ONE LIFE STUDIOS",
+      "country": "India"
+    },
+    {
+      "id": "41",
+      "name": "Erika Gomez",
+      "email": "egomez@onzadistribution.com",
+      "company": "ONZA DISTRIBUTION",
+      "country": "Spain"
+    },
+    {
+      "id": "42",
+      "name": "Wendy Parkies",
+      "email": "w.parkies@gmail.com",
+      "company": "OTTera INC.",
+      "country": "United States"
+    },
+    {
+      "id": "43",
+      "name": "Bonolo Madisakwane",
+      "email": "contact@paramount.com",
+      "company": "PARAMOUNT AFRICA",
+      "country": "South Africa"
+    },
+    {
+      "id": "44",
+      "name": "Andrew Miller",
+      "email": "andrew@redbishopmedia.com",
+      "company": "RED BISHOP MEDIA",
+      "country": "South Africa"
+    },
+    {
+      "id": "45",
+      "name": "Vito Marchiano",
+      "email": "vito@rushlake-media.com",
+      "company": "RUSHLAKE MEDIA",
+      "country": "Germany"
+    },
+    {
+      "id": "46",
+      "name": "Veena Lala",
+      "email": "lalav@sabc.co.za",
+      "company": "SABC",
+      "country": "South Africa"
+    },
+    {
+      "id": "47",
+      "name": "Kopano Thage",
+      "email": "thagek@sentech.co.za",
+      "company": "SENTECH",
+      "country": "South Africa"
+    },
+    {
+      "id": "48",
+      "name": "Natan Oletto",
+      "email": "natan.oletto@seriella.com",
+      "company": "SERIELLA - UNIPRO EDITORA LTDA",
+      "country": "Brazil"
+    },
+    {
+      "id": "49",
+      "name": "Sujata Lewis Sisodiya",
+      "email": "sujata.lewis@disney.com",
+      "company": "STAR INDIA",
+      "country": "India"
+    },
+    {
+      "id": "50",
+      "name": "Douglas Welch",
+      "email": "dwelch@televisaunivision.com",
+      "company": "TELEVISAUNIVISION",
+      "country": "United States"
+    },
+    {
+      "id": "51",
+      "name": "Raphael Raguet",
+      "email": "raphael.raguet@smurf.com",
+      "company": "THE SMURFS - PEYO COMPANY",
+      "country": "Belgium"
+    },
+    {
+      "id": "52",
+      "name": "Maimouna Soare",
+      "email": "msoare@trace.tv",
+      "company": "TRACE GLOBAL",
+      "country": "France"
+    },
+    {
+      "id": "53",
+      "name": "Daniel Tah",
+      "email": "danieltah@trd-media.com",
+      "company": "TRD MEDIA",
+      "country": "Nigeria"
+    },
+    {
+      "id": "54",
+      "name": "Kumbi Chitenderu",
+      "email": "kumbi.chitenderu@triggerfish.com",
+      "company": "TRIGGERFISH ANIMATION STUDIOS",
+      "country": "South Africa"
+    },
+    {
+      "id": "55",
+      "name": "George Okatch",
+      "email": "george@ubongo.org",
+      "company": "UBONGO INTERNATIONAL",
+      "country": "Tanzania"
+    }
+  ]
+}
