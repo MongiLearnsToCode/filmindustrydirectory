@@ -6,31 +6,23 @@ interface UseToolbarStateProps {
 
 export function useToolbarState({ onSearch }: UseToolbarStateProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showCsvModal, setShowCsvModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = useCallback((value: string) => {
     setSearchQuery(value);
     setIsSearching(true);
-    
-    const timeoutId = setTimeout(() => {
-      onSearch(value);
-      setIsSearching(false);
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
+    onSearch(value);
+    // Simulate search completion after a short delay
+    setTimeout(() => setIsSearching(false), 500);
   }, [onSearch]);
 
   return {
     searchQuery,
-    isSearching,
     showAddModal,
-    showCsvModal,
+    isSearching,
     setSearchQuery,
-    setIsSearching,
     setShowAddModal,
-    setShowCsvModal,
     handleSearch,
   };
-}
+};

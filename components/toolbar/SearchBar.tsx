@@ -4,16 +4,17 @@ interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   isSearching: boolean;
+  placeholder?: string;
 }
 
-export function SearchBar({ value, onChange, isSearching }: SearchBarProps) {
+export function SearchBar({ value, onChange, isSearching, placeholder = "Search contacts..." }: SearchBarProps) {
   return (
     <div className="relative flex-grow">
       <input
         type="text"
-        placeholder="Search contacts..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
         className="w-full h-10 pl-10 pr-4 
                  bg-white dark:bg-gray-800 
                  border border-gray-300 dark:border-gray-600 
