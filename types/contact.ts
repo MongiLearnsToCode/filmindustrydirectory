@@ -7,6 +7,7 @@ export interface Contact {
   title?: string;
   country?: string;
   industry?: string;
+  notes?: string;
   lastOpened?: string;
   dateAdded?: string;
   dateModified?: string;
