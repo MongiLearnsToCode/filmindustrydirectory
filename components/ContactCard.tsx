@@ -222,20 +222,36 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
             flex-direction: column;
             align-items: flex-start;
             padding: 1rem;
-            overflow-wrap: break-word;
+            width: 100%;
+          }
+          .contact-card > div {
+            width: 100%;
             word-wrap: break-word;
-            word-break: break-word;
-            hyphens: auto;
+            overflow-wrap: break-word;
           }
           .contact-card h3 {
             font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
           }
           .contact-card p {
             font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+          .contact-card a {
+            display: block;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            margin-bottom: 0.5rem;
           }
           .contact-card .actions {
-            margin-top: 0.5rem;
+            margin-top: 1rem;
             justify-content: flex-start;
+            width: auto;
           }
         }
       `}</style>
