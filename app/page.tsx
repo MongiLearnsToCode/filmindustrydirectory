@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, Fragment } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ContactsData, Contact, SearchFilters, SortConfig } from '../types/contact';
 import ContactCard from '../components/ContactCard';
 import FinderToolbar from '../components/FinderToolbar';
@@ -144,84 +144,86 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <main className="min-h-screen bg-[rgb(var(--background-primary))]">
+      <div className="bg-[rgb(var(--background-secondary))] dark:bg-gradient-to-b from-[rgb(var(--background-primary))] to-[rgb(var(--background-secondary))]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="text-center">
+            <div className="flex justify-center mb-8">
+              <Image
+                src="/images/fortune-well-dark.svg"
+                alt="Fortune Well"
+                width={300}
+                height={75}
+                className="block dark:hidden"
+                priority
+              />
+              <Image
+                src="/images/fortune-well-light.svg"
+                alt="Fortune Well"
+                width={300}
+                height={75}
+                className="hidden dark:block"
+                priority
+              />
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))] dark:text-[rgb(var(--accent))] mb-6">
+              Industry Directory
+            </h1>
+            <p className="text-lg sm:text-xl text-[rgb(var(--text-secondary))] max-w-2xl mx-auto">
+              Your centralized hub for managing industry contacts. Easily organize, search, and maintain your professional network.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <FinderToolbar
+        onSearch={handleSearch}
         onViewChange={setViewMode}
         currentView={viewMode}
-        onSearch={setSearchQuery}
         onAddContact={handleAddContact}
         onFilterChange={handleFilterChange}
-        onSortChange={setSortConfig}
-        onGroupChange={setGroupBy}
+        onSortChange={handleSortChange}
+        onGroupChange={handleGroupChange}
         searchFilters={searchFilters}
         sortConfig={sortConfig}
         groupBy={groupBy}
       />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Grid View */}
-        {viewMode === 'grid' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Object.entries(groupedContacts).map(([group, contacts]) => (
-              <Fragment key={group}>
-                {groupBy && (
-                  <div className="col-span-full mt-6 first:mt-0">
-                    <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      {group}
-                    </h2>
-                  </div>
-                )}
-                {contacts.map((contact) => (
+      
+      <div className="p-4">
+        {groupBy ? (
+          Object.entries(groupedContacts).map(([group, contacts]) => (
+            <div key={group} className="mb-8">
+              <h2 className="text-lg font-semibold text-[rgb(var(--text-primary))] mb-4">{group}</h2>
+              <div className={`grid ${
+                viewMode === 'grid' 
+                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
+                  : 'grid-cols-1 gap-2'
+              }`}>
+                {contacts.map(contact => (
                   <ContactCard
                     key={contact.id}
                     contact={contact}
                     viewMode={viewMode}
                     onEdit={setEditingContact}
-                    onDelete={() => {}}
                   />
                 ))}
-              </Fragment>
-            ))}
-          </div>
-        )}
-
-        {/* List View */}
-        {viewMode === 'list' && (
-          <div className="space-y-6">
-            {Object.entries(groupedContacts).map(([group, contacts]) => (
-              <div key={group}>
-                {groupBy && (
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    {group}
-                  </h2>
-                )}
-                <div className="space-y-2">
-                  {contacts.map((contact) => (
-                    <ContactCard
-                      key={contact.id}
-                      contact={contact}
-                      viewMode={viewMode}
-                      onEdit={setEditingContact}
-                      onDelete={() => {}}
-                    />
-                  ))}
-                </div>
               </div>
+            </div>
+          ))
+        ) : (
+          <div className={`grid ${
+            viewMode === 'grid' 
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
+              : 'grid-cols-1 gap-2'
+          }`}>
+            {processedContacts.map(contact => (
+              <ContactCard
+                key={contact.id}
+                contact={contact}
+                viewMode={viewMode}
+                onEdit={setEditingContact}
+              />
             ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {Object.values(groupedContacts).flat().length === 0 && (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              No contacts found
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400">
-              {searchQuery
-                ? "Try adjusting your search or filters"
-                : "Add your first contact to get started"}
-            </p>
           </div>
         )}
       </div>
@@ -229,7 +231,7 @@ export default function Home() {
       {toast && (
         <Toast
           message={toast.message}
-          action={toast.action}
+          onUndo={toast.action}
           onClose={() => setToast(null)}
         />
       )}
