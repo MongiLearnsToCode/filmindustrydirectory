@@ -216,26 +216,25 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .contact-card {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+          }
+          .contact-card h3 {
+            font-size: 1.125rem;
+          }
+          .contact-card p {
+            font-size: 0.875rem;
+          }
+          .contact-card .actions {
+            margin-top: 0.5rem;
+            justify-content: flex-start;
+          }
+        }
+      `}</style>
     </>
   );
 }
-
-<style jsx>
-  @media (max-width: 640px) {
-    .contact-card {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 1rem;
-    }
-    .contact-card h3 {
-      font-size: 1.125rem;
-    }
-    .contact-card p {
-      font-size: 0.875rem;
-    }
-    .contact-card .actions {
-      margin-top: 0.5rem;
-      justify-content: flex-start;
-    }
-  }
-</style>
