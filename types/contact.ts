@@ -18,3 +18,16 @@ export interface Contact {
 export interface ContactsData {
   contacts: Contact[];
 }
+
+export interface SearchFilters {
+  industry: string;
+  country: string;
+  tags: string[];
+}
+
+export type SortField = 'name' | 'company' | 'dateModified' | 'dateAdded';
+
+export interface SortConfig {
+  field: SortField;
+  direction: 'asc' | 'desc';
+}

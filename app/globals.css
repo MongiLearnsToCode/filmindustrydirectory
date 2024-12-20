@@ -11,26 +11,26 @@
     --light: 238, 238, 238;  /* #EEEEEE */
     
     /* Light Theme (default) */
-    --background: var(--light);
-    --background-dark: var(--dark);
-    --background-medium: var(--grey);
-    --text: var(--dark);
-    --text-light: var(--light);
-    --text-medium: var(--grey);
+    --background-primary: var(--light);
+    --background-secondary: 255, 255, 255;  /* #FFFFFF */
+    --text-primary: var(--dark);
+    --text-secondary: var(--grey);
+    --accent: var(--gold);
+    --border: 229, 231, 235;  /* #E5E7EB */
   }
 
   .dark {
     /* Dark Theme */
-    --background: var(--dark);
-    --background-dark: var(--grey);
-    --background-medium: var(--light);
-    --text: var(--light);
-    --text-light: var(--dark);
-    --text-medium: var(--light);
+    --background-primary: var(--dark);
+    --background-secondary: var(--grey);
+    --text-primary: var(--light);
+    --text-secondary: 209, 213, 219;  /* #D1D5DB */
+    --accent: var(--gold);
+    --border: 75, 85, 99;  /* #4B5563 */
   }
 
   body {
-    @apply bg-background text-text transition-colors duration-200;
+    @apply bg-[rgb(var(--background-primary))] text-[rgb(var(--text-primary))] transition-colors duration-200;
   }
 
   /* Buttons */
@@ -38,58 +38,57 @@
     @apply inline-flex items-center justify-center 
            rounded-xl font-medium text-sm
            transition-all duration-200 ease-out
-           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark
+           focus:outline-none focus:ring-2 focus:ring-offset-2 
+           focus:ring-offset-[rgb(var(--background-primary))]
+           dark:focus:ring-offset-[rgb(var(--background-primary))]
            disabled:opacity-50 disabled:cursor-not-allowed
-           px-4;
+           px-4 py-2;
     height: 2.5rem;
   }
   
   /* Primary Button */
   .btn-primary {
-    @apply bg-accent text-dark
-           hover:bg-accent-hover active:bg-accent-hover
-           focus:ring-accent/20
-           dark:focus:ring-accent/30
-           border border-transparent;
+    @apply bg-[rgb(var(--accent))] text-[rgb(var(--dark))]
+           hover:brightness-110 
+           focus:ring-[rgb(var(--accent))]/30;
   }
   
   /* Secondary Button */
   .btn-secondary {
-    @apply bg-background-medium text-text-light
-           hover:bg-background-dark active:bg-background-dark
-           dark:bg-background-dark dark:text-background
-           dark:hover:bg-background-medium dark:active:bg-background-medium
-           border border-background-medium dark:border-background-medium
-           focus:ring-background-medium/20 dark:focus:ring-background-medium/20;
+    @apply bg-[rgb(var(--background-secondary))]
+           text-[rgb(var(--text-primary))]
+           hover:bg-[rgb(var(--background-primary))]
+           border border-[rgb(var(--border))]
+           focus:ring-[rgb(var(--border))]/20;
   }
   
   /* Ghost Button */
   .btn-ghost {
-    @apply bg-transparent text-text
-           hover:bg-card-hover active:bg-background-medium
-           dark:text-background 
-           dark:hover:bg-background-dark dark:active:bg-background-medium
-           focus:ring-background-medium/20 dark:focus:ring-background-medium/20;
+    @apply bg-transparent text-[rgb(var(--text-primary))]
+           hover:bg-[rgb(var(--background-secondary))] active:bg-[rgb(var(--background-primary))]
+           dark:text-[rgb(var(--text-secondary))] 
+           dark:hover:bg-[rgb(var(--background-secondary))] dark:active:bg-[rgb(var(--background-primary))]
+           focus:ring-[rgb(var(--border))]/20 dark:focus:ring-[rgb(var(--border))]/20;
   }
   
   /* Form Inputs */
   .form-input {
     @apply w-full px-4
-           bg-card dark:bg-background-dark
-           border border-background-medium dark:border-background-medium
+           bg-[rgb(var(--background-secondary))] dark:bg-[rgb(var(--background-primary))]
+           border border-[rgb(var(--border))] dark:border-[rgb(var(--border))]
            rounded-xl text-sm
            transition-all duration-200
-           placeholder:text-background-medium
-           focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent
-           dark:focus:ring-accent/30 dark:focus:border-accent
-           dark:text-light;
+           placeholder-[rgb(var(--text-secondary))]
+           focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]/20 focus:border-[rgb(var(--accent))]
+           dark:focus:ring-[rgb(var(--accent))]/30 dark:focus:border-[rgb(var(--accent))]
+           dark:text-[rgb(var(--text-secondary))];
     height: 2.5rem;
   }
 
   /* Background Patterns */
   .bg-pattern {
-    background-color: rgb(var(--background));
-    background-image: radial-gradient(circle at 1px 1px, rgb(var(--text), 0.05) 1px, transparent 0);
+    background-color: rgb(var(--background-primary));
+    background-image: radial-gradient(circle at 1px 1px, rgb(var(--text-primary), 0.05) 1px, transparent 0);
     background-size: 20px 20px;
   }
 }
@@ -122,6 +121,18 @@
 
   .responsive-text {
     @apply text-sm sm:text-base;
+  }
+
+  .input {
+    @apply px-4 py-2 rounded-lg
+           bg-[rgb(var(--background-secondary))]
+           border border-[rgb(var(--border))]
+           text-[rgb(var(--text-primary))]
+           placeholder-[rgb(var(--text-secondary))]
+           focus:outline-none focus:ring-2
+           focus:border-[rgb(var(--accent))]
+           focus:ring-[rgb(var(--accent))]/30
+           transition-all duration-200;
   }
 }
 

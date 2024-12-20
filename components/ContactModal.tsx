@@ -1,3 +1,5 @@
+'use client';
+
 import { Contact } from '../types/contact';
 import { Dialog } from '@headlessui/react';
 
@@ -38,9 +40,18 @@ export default function ContactModal({ contact, isOpen, onClose }: ContactModalP
               <div className="w-16 h-16 rounded-xl bg-yellow-400 dark:bg-yellow-500 
                            flex items-center justify-center
                            border border-yellow-500 dark:border-yellow-600">
-                <span className="text-gray-900 font-bold text-2xl">
-                  {contact.name.charAt(0).toUpperCase()}
-                </span>
+                <svg 
+                  className="w-8 h-8 text-gray-900" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="8" r="5" />
+                  <path d="M20 21a8 8 0 1 0-16 0" />
+                </svg>
               </div>
               <div className="flex-1 min-w-0">
                 <Dialog.Title className="text-2xl font-bold text-gray-900 dark:text-white">

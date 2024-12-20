@@ -1,3 +1,5 @@
+'use client';
+
 import { Contact } from '../types/contact';
 import { useState } from 'react';
 import AuthActions from './AuthActions';
@@ -101,9 +103,18 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
           <div className="w-12 h-12 rounded-lg bg-yellow-400 dark:bg-yellow-500 
                         flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 
                         border border-yellow-500 dark:border-yellow-600 shrink-0">
-            <span className="text-gray-900 font-semibold text-lg">
-              {contact.name.charAt(0).toUpperCase()}
-            </span>
+            <svg 
+              className="w-6 h-6 text-gray-900" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="8" r="5" />
+              <path d="M20 21a8 8 0 1 0-16 0" />
+            </svg>
           </div>
 
           {/* Contact Info */}

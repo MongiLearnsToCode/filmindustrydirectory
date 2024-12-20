@@ -1,5 +1,4 @@
 import React from 'react';
-import { IconButton } from '../IconButton';
 import type { ViewMode } from '../FinderToolbar';
 
 interface ViewControlProps {
@@ -9,34 +8,36 @@ interface ViewControlProps {
 
 export function ViewControl({ currentView, onViewChange }: ViewControlProps) {
   return (
-    <div className="flex items-center rounded-lg 
-                 bg-gray-100 dark:bg-gray-800 
-                 ring-1 ring-gray-200 dark:ring-gray-700
-                 p-1">
-      <IconButton
-        icon="grid"
+    <div className="flex items-center">
+      <button
         onClick={() => onViewChange('grid')}
-        active={currentView === 'grid'}
-        className="h-8 w-8 text-gray-700 dark:text-gray-200
-                 hover:bg-gray-200 dark:hover:bg-gray-700
-                 active:bg-gray-300 dark:active:bg-gray-600"
-      />
-      <IconButton
-        icon="list"
+        className={`p-1 rounded-md transition-colors duration-200
+                 ${currentView === 'grid'
+                   ? 'text-[rgb(var(--accent))] bg-[rgb(var(--accent))]/10'
+                   : 'text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--background-hover))]'
+                 }`}
+        title="Grid view"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+      </button>
+
+      <button
         onClick={() => onViewChange('list')}
-        active={currentView === 'list'}
-        className="h-8 w-8 text-gray-700 dark:text-gray-200
-                 hover:bg-gray-200 dark:hover:bg-gray-700
-                 active:bg-gray-300 dark:active:bg-gray-600"
-      />
-      <IconButton
-        icon="columns"
-        onClick={() => onViewChange('columns')}
-        active={currentView === 'columns'}
-        className="h-8 w-8 text-gray-700 dark:text-gray-200
-                 hover:bg-gray-200 dark:hover:bg-gray-700
-                 active:bg-gray-300 dark:active:bg-gray-600"
-      />
+        className={`p-1 rounded-md transition-colors duration-200
+                 ${currentView === 'list'
+                   ? 'text-[rgb(var(--accent))] bg-[rgb(var(--accent))]/10'
+                   : 'text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--background-hover))]'
+                 }`}
+        title="List view"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
+                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+      </button>
     </div>
   );
 }
