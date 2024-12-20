@@ -23,7 +23,7 @@ interface FinderToolbarProps {
   groupBy: string | null;
 }
 
-type ViewMode = 'grid' | 'list';
+export type ViewMode = 'grid' | 'list';
 
 export default function FinderToolbar({
   onViewChange,
