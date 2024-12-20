@@ -98,7 +98,7 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
         role="article"
         aria-label={`Contact card for ${contact.name}`}
       >
-        <div className="flex items-start w-full">
+        <div className="flex items-start w-full contact-card">
           {/* Contact Avatar/Initial */}
           <div className="w-12 h-12 rounded-lg bg-yellow-400 dark:bg-yellow-500 
                         flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 
@@ -174,7 +174,7 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
           {/* Action Buttons */}
           <div 
             className={`
-              ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0 shrink-0
+              ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0 shrink-0 actions
               ${showActions ? 'opacity-100' : 'opacity-0 sm:opacity-0 group-hover:opacity-100'}
               transition-opacity duration-200
             `}
@@ -219,3 +219,23 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
     </>
   );
 }
+
+<style jsx>
+  @media (max-width: 640px) {
+    .contact-card {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+    .contact-card h3 {
+      font-size: 1.125rem;
+    }
+    .contact-card p {
+      font-size: 0.875rem;
+    }
+    .contact-card .actions {
+      margin-top: 0.5rem;
+      justify-content: flex-start;
+    }
+  }
+</style>
