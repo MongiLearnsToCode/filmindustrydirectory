@@ -49,47 +49,45 @@ export default function FinderToolbar({
   const [showCsvModal, setShowCsvModal] = useState(false);
 
   return (
-    <div className="sticky top-0 z-50 backdrop-blur-md bg-[rgb(var(--background-secondary))]/80 border-b border-[rgb(var(--border))]">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 p-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <SearchBar 
+    <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-2 md:p-4 space-y-2 md:space-y-4">
+        {/* Search and Add Contact Row */}
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+          <div className="w-full sm:w-96">
+            <SearchBar
               value={searchQuery}
-              onChange={handleSearch}
-              placeholder="Search..."
+              onChange={setSearchQuery}
+              onSearch={handleSearch}
               isSearching={isSearching}
-              className="w-64"
             />
-            
-            <div className="h-6 w-px bg-[rgb(var(--border))]" />
-            
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <AddContactButton onClick={() => setShowAddModal(true)} />
+            <button
+              onClick={() => setShowCsvModal(true)}
+              className="px-3 py-1.5 text-sm rounded-md bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              Import CSV
+            </button>
+          </div>
+        </div>
+
+        {/* Controls Row */}
+        <div className="flex flex-wrap gap-2 items-center">
+          <ViewControl currentView={currentView} onViewChange={onViewChange} />
+          <div className="h-4 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block" />
+          <div className="flex flex-wrap gap-2 items-center">
             <FilterControl
               filters={searchFilters}
               onChange={onFilterChange}
             />
-          </div>
-
-          <div className="flex items-center gap-2 ml-auto">
-            <div className="flex items-center rounded-lg bg-[rgb(var(--background-primary))] p-1 border border-[rgb(var(--border))]">
-              <GroupControl
-                value={groupBy}
-                onChange={onGroupChange}
-              />
-              <div className="h-5 w-px mx-1 bg-[rgb(var(--border))]" />
-              <ViewControl
-                currentView={currentView}
-                onViewChange={onViewChange}
-              />
-              <div className="h-5 w-px mx-1 bg-[rgb(var(--border))]" />
-              <SortControl
-                config={sortConfig}
-                onChange={onSortChange}
-              />
-            </div>
-
-            <AddContactButton 
-              onAddSingle={() => setShowAddModal(true)}
-              onAddCsv={() => setShowCsvModal(true)}
+            <SortControl
+              config={sortConfig}
+              onChange={onSortChange}
+            />
+            <GroupControl
+              groupBy={groupBy}
+              onChange={onGroupChange}
             />
           </div>
         </div>
@@ -97,20 +95,20 @@ export default function FinderToolbar({
 
       {showAddModal && (
         <AddContactModal
-          isOpen={showAddModal}
           onClose={() => setShowAddModal(false)}
           onSave={onAddContact}
         />
       )}
 
-      <CsvUploadModal
-        isOpen={showCsvModal}
-        onClose={() => setShowCsvModal(false)}
-        onUpload={(contacts) => {
-          contacts.forEach(contact => onAddContact(contact));
-          setShowCsvModal(false);
-        }}
-      />
+      {showCsvModal && (
+        <CsvUploadModal
+          onClose={() => setShowCsvModal(false)}
+          onUpload={(contacts) => {
+            contacts.forEach(contact => onAddContact(contact));
+            setShowCsvModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }
