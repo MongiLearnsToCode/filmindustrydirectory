@@ -4,6 +4,7 @@ export interface Contact {
   email: string;
   company: string;
   phone?: string;
+  title?: string;
   country?: string;
   industry?: string;
   lastOpened?: string;
