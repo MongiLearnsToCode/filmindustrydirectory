@@ -1,9 +1,13 @@
-import type { Metadata } from 'next'
 import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import Navigation from '../components/Navigation'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Industry Directory',
-  description: 'A comprehensive directory of industry contacts',
+  description: 'A comprehensive directory of industry contacts and companies',
 }
 
 export default function RootLayout({
@@ -13,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-dark-950 text-dark-100 min-h-screen">{children}</body>
+      <body className={inter.className}>
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
