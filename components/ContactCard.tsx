@@ -222,6 +222,10 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
             flex-direction: column;
             align-items: flex-start;
             padding: 1rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
           }
           .contact-card h3 {
             font-size: 1.125rem;
