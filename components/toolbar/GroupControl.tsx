@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 interface GroupControlProps {
   value: string | null;
   onChange: (field: string | null) => void;
+  className?: string;
 }
 
 const groupOptions = [
@@ -12,7 +13,7 @@ const groupOptions = [
   { value: null, label: 'No Grouping' },
 ];
 
-export function GroupControl({ value, onChange }: GroupControlProps) {
+export function GroupControl({ value, onChange, className }: GroupControlProps) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +31,7 @@ export function GroupControl({ value, onChange }: GroupControlProps) {
   const currentOption = groupOptions.find(option => option.value === value);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className={`relative ${className}`} ref={menuRef}>
       <button
         onClick={() => setShowMenu(!showMenu)}
         className="flex items-center gap-1.5 px-2 py-1 rounded-md text-sm
