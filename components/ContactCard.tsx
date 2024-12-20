@@ -14,17 +14,17 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
   const [showActions, setShowActions] = useState(false);
 
   const getCardClassName = () => {
-    const baseClasses = "bg-dark-800 border border-dark-700 group relative transition-all duration-200 responsive-padding";
+    const baseClasses = "bg-dark text-light border border-grey group relative transition-all duration-200 responsive-padding hover:shadow-soft-md";
     
     switch (viewMode) {
       case 'list':
-        return `${baseClasses} border-b hover:bg-dark-700 flex flex-col sm:flex-row sm:items-center`;
+        return `${baseClasses} border-b hover:bg-grey flex flex-col sm:flex-row sm:items-center`;
       case 'grid':
-        return `${baseClasses} rounded-lg hover:shadow-glow w-full`;
+        return `${baseClasses} rounded-lg hover:bg-grey w-full`;
       case 'columns':
-        return `${baseClasses} rounded-lg hover:shadow-glow mb-4 break-inside-avoid`;
+        return `${baseClasses} rounded-lg hover:bg-grey mb-4 break-inside-avoid`;
       default:
-        return `${baseClasses} rounded-lg hover:shadow-glow`;
+        return `${baseClasses} rounded-lg hover:bg-grey`;
     }
   };
 
@@ -75,10 +75,10 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
       role="article"
       aria-label={`Contact card for ${contact.name}`}
     >
-      <div className="flex items-start">
+      <div className="flex items-start w-full">
         {/* Contact Avatar/Initial */}
-        <div className="w-12 h-12 rounded-lg bg-dark-700 flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 border border-dark-600 shrink-0">
-          <span className="text-teal-400 font-semibold text-lg">
+        <div className="w-12 h-12 rounded-lg bg-gold flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 border border-grey shrink-0">
+          <span className="text-dark font-semibold text-lg">
             {contact.name.charAt(0).toUpperCase()}
           </span>
         </div>
@@ -86,7 +86,7 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
         {/* Action Buttons */}
         <div 
           className={`
-            ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0
+            ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0 shrink-0
             ${showActions ? 'opacity-100' : 'opacity-0 sm:opacity-0 group-hover:opacity-100'}
             transition-opacity duration-200
           `}
@@ -99,45 +99,69 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
         </div>
       </div>
 
-      <div className="flex-1 min-w-0 overflow-hidden">
-        <h3 className="font-semibold text-lg text-dark-50 truncate mb-2">{contact.name}</h3>
-        <p className="text-dark-300 text-sm truncate">{contact.company}</p>
-        {contact.country && (
-          <p className="text-dark-400 text-sm mt-2 flex items-center truncate">
-            <svg className="w-4 h-4 mr-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
-            </svg>
-            <span className="truncate">{contact.country}</span>
-          </p>
-        )}
-        
-        {contact.tags && contact.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5 max-w-full">
-            {contact.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-dark-700 text-teal-400 border border-dark-600 max-w-full truncate"
-              >
-                {tag}
-              </span>
-            ))}
+      {/* Contact Info */}
+      <div className={`flex-grow min-w-0 ${viewMode === 'list' ? 'sm:ml-4' : ''}`}>
+        <div className="space-y-2">
+          <h3 className="font-semibold text-lg text-light truncate" title={contact.name}>
+            {contact.name}
+          </h3>
+          
+          <div className="space-y-1">
+            {contact.title && (
+              <p className="text-sm text-light/80 truncate" title={contact.title}>
+                {contact.title}
+              </p>
+            )}
+            
+            {contact.company && (
+              <p className="text-sm text-light/80 truncate" title={contact.company}>
+                {contact.company}
+              </p>
+            )}
           </div>
-        )}
 
-        <div className="mt-3 flex items-center">
-          <a
-            href={`mailto:${contact.email}`}
-            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-sm font-medium 
-                     transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400 rounded px-2 py-1 -ml-2
-                     truncate max-w-full"
-            onClick={e => e.stopPropagation()}
-            aria-label={`Send email to ${contact.name}`}
-          >
-            <svg className="w-4 h-4 mr-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <span className="truncate">{contact.email}</span>
-          </a>
+          <div className="mt-3 space-y-2">
+            {contact.email && (
+              <Link
+                href={`mailto:${contact.email}`}
+                className="text-sm text-gold hover:text-light flex items-center gap-1.5 transition-colors max-w-full"
+                title={contact.email}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                <span className="truncate">{contact.email}</span>
+              </Link>
+            )}
+
+            {contact.phone && (
+              <Link
+                href={`tel:${contact.phone}`}
+                className="text-sm text-gold hover:text-light flex items-center gap-1.5 transition-colors max-w-full"
+                title={contact.phone}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                <span className="truncate">{contact.phone}</span>
+              </Link>
+            )}
+          </div>
+
+          {contact.tags && contact.tags.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {contact.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-grey text-light border border-grey/30 truncate max-w-[150px]"
+                  title={tag}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

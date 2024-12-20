@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
+import { ThemeToggle } from './ThemeToggle'
 
 export default function Navigation() {
   const [user, setUser] = useState<User | null>(null)
@@ -34,28 +35,26 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white dark:bg-gray-900 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold text-gray-800">
+              <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white">
                 Industry Directory
               </Link>
             </div>
           </div>
           
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
             {loading ? (
-              <div className="h-8 w-24 bg-gray-200 animate-pulse rounded"></div>
+              <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg"></div>
             ) : user ? (
-              <div className="flex items-center gap-4">
-                <span className="text-gray-700">
-                  {user.email}
-                </span>
+              <div className="flex items-center space-x-4">
                 <button
                   onClick={handleSignOut}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   Sign Out
                 </button>
@@ -63,7 +62,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 Sign In
               </Link>
