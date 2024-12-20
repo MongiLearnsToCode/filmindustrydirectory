@@ -4,6 +4,7 @@ import type { SortConfig, SortField } from '../../types/contact';
 interface SortControlProps {
   config: SortConfig;
   onChange: (config: SortConfig) => void;
+  className?: string;
 }
 
 const sortOptions: { value: SortField; label: string }[] = [
@@ -13,7 +14,7 @@ const sortOptions: { value: SortField; label: string }[] = [
   { value: 'dateAdded', label: 'Date Added' },
 ];
 
-export function SortControl({ config, onChange }: SortControlProps) {
+export function SortControl({ config, onChange, className }: SortControlProps) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +44,7 @@ export function SortControl({ config, onChange }: SortControlProps) {
   const currentOption = sortOptions.find(option => option.value === config.field);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className={`relative ${className}`} ref={menuRef}>
       <div className="flex items-center gap-1">
         <button
           onClick={() => setShowMenu(!showMenu)}
