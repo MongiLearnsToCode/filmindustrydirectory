@@ -69,21 +69,24 @@ export default function FinderToolbar({
             />
           </div>
 
-          <div className="flex items-center gap-2 ml-auto w-full sm:w-auto justify-end">
-            <div className="flex items-center rounded-lg bg-[rgb(var(--background-primary))] p-1 border border-[rgb(var(--border))]">
+          <div className="flex flex-wrap items-center gap-2 ml-auto w-full sm:w-auto justify-end">
+            <div className="flex flex-wrap items-center rounded-lg bg-[rgb(var(--background-primary))] p-1 border border-[rgb(var(--border))]">
               <GroupControl
                 value={groupBy}
                 onChange={onGroupChange}
+                className="w-full sm:w-auto"
               />
               <div className="hidden sm:block h-5 w-px mx-1 bg-[rgb(var(--border))]" />
               <ViewControl
                 currentView={currentView}
                 onViewChange={onViewChange}
+                className="w-full sm:w-auto"
               />
               <div className="hidden sm:block h-5 w-px mx-1 bg-[rgb(var(--border))]" />
               <SortControl
                 config={sortConfig}
                 onChange={onSortChange}
+                className="w-full sm:w-auto"
               />
             </div>
 
