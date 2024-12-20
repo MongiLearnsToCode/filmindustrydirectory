@@ -30,7 +30,7 @@ export default function Home() {
     field: 'dateModified',
     direction: 'desc'
   });
-  const [groupBy, setGroupBy] = useState<string | null>(null);
+  const [groupBy, setGroupBy] = useState<keyof Contact | null>(null);
 
   // Create search index for better performance
   const searchIndex = useMemo(() => {
@@ -65,7 +65,7 @@ export default function Home() {
     setSortConfig(config);
   };
 
-  const handleGroupChange = (field: string | null) => {
+  const handleGroupChange = (field: keyof Contact | null) => {
     setGroupBy(field);
   };
 
@@ -118,7 +118,8 @@ export default function Home() {
     if (!groupBy) return { ungrouped: processedContacts };
 
     return processedContacts.reduce((groups: Record<string, Contact[]>, contact) => {
-      const groupValue = contact[groupBy as keyof Contact] || 'Other';
+      const key = groupBy;
+      const groupValue = (contact[key]?.toString() || 'Other');
       if (!groups[groupValue]) {
         groups[groupValue] = [];
       }
