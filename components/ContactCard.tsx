@@ -221,8 +221,9 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
           .contact-card {
             flex-direction: column;
             align-items: flex-start;
-            padding: 1rem;
-            width: 100%;
+            padding: 0.5rem;
+            width: 95vw;
+            margin: 0.25rem auto;
           }
           .contact-card > div {
             width: 100%;
@@ -249,7 +250,7 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
             margin-bottom: 0.5rem;
           }
           .contact-card .actions {
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             justify-content: flex-start;
             width: auto;
           }
