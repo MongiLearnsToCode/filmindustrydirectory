@@ -207,9 +207,15 @@ export default function Home() {
           currentGroup={groupField}
         />
         
-        <div className={`p-4 ${viewMode === 'columns' ? 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4' : ''}`}>
+        <div className={`p-4 ${viewMode === 'columns' ? 'columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 [column-fill:_balance]' : ''}`}>
           {groupField === 'none' ? (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : ''}>
+            <div className={
+              viewMode === 'grid' 
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' 
+                : viewMode === 'columns'
+                  ? 'space-y-4'  
+                  : ''
+            }>
               {sortedContacts.map(contact => (
                 <ContactCard
                   key={contact.id}
@@ -222,8 +228,8 @@ export default function Home() {
             </div>
           ) : (
             Object.entries(groupedContacts).map(([group, contacts]) => (
-              <div key={group} className="mb-8">
-                <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm py-4">
+              <div key={group} className={`mb-8 ${viewMode === 'columns' ? 'break-inside-avoid' : ''}`}>
+                <div className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm py-4 mb-4">
                   <div className="flex items-center gap-4">
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                       {group}
@@ -234,7 +240,13 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
-                <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : ''}>
+                <div className={
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
+                    : viewMode === 'columns'
+                      ? 'space-y-4'  
+                      : ''
+                }>
                   {contacts.map(contact => (
                     <ContactCard
                       key={contact.id}

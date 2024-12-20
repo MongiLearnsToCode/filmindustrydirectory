@@ -2,6 +2,7 @@ import { Contact } from '../types/contact';
 import { useState } from 'react';
 import AuthActions from './AuthActions';
 import Link from 'next/link';
+import ContactModal from './ContactModal';
 
 interface ContactCardProps {
   contact: Contact;
@@ -12,20 +13,38 @@ interface ContactCardProps {
 
 export default function ContactCard({ contact, viewMode, onEdit, onDelete }: ContactCardProps) {
   const [showActions, setShowActions] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getCardClassName = () => {
-    const baseClasses = "bg-dark text-light border border-grey group relative transition-all duration-200 responsive-padding hover:shadow-soft-md";
+    const baseClasses = `bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+                        group relative transition-all duration-200 
+                        hover:shadow-lg dark:hover:shadow-gray-900/50
+                        cursor-pointer`;
     
     switch (viewMode) {
       case 'list':
-        return `${baseClasses} border-b hover:bg-grey flex flex-col sm:flex-row sm:items-center`;
+        return `${baseClasses} border-b hover:bg-gray-50 dark:hover:bg-gray-700 
+                flex flex-col sm:flex-row sm:items-center p-4`;
       case 'grid':
-        return `${baseClasses} rounded-lg hover:bg-grey w-full`;
+        return `${baseClasses} rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 
+                w-full p-4`;
       case 'columns':
-        return `${baseClasses} rounded-lg hover:bg-grey mb-4 break-inside-avoid`;
+        return `${baseClasses} rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 
+                p-4 break-inside-avoid-column block`;
       default:
-        return `${baseClasses} rounded-lg hover:bg-grey`;
+        return `${baseClasses} rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 p-4`;
     }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't open modal if clicking on action buttons or links
+    if (
+      (e.target as HTMLElement).closest('button') ||
+      (e.target as HTMLElement).closest('a')
+    ) {
+      return;
+    }
+    setIsModalOpen(true);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -68,102 +87,124 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
   };
 
   return (
-    <div
-      className={getCardClassName()}
-      onMouseEnter={() => setShowActions(true)}
-      onMouseLeave={() => setShowActions(false)}
-      role="article"
-      aria-label={`Contact card for ${contact.name}`}
-    >
-      <div className="flex items-start w-full">
-        {/* Contact Avatar/Initial */}
-        <div className="w-12 h-12 rounded-lg bg-gold flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 border border-grey shrink-0">
-          <span className="text-dark font-semibold text-lg">
-            {contact.name.charAt(0).toUpperCase()}
-          </span>
-        </div>
+    <>
+      <div
+        className={getCardClassName()}
+        onMouseEnter={() => setShowActions(true)}
+        onMouseLeave={() => setShowActions(false)}
+        onClick={handleClick}
+        role="article"
+        aria-label={`Contact card for ${contact.name}`}
+      >
+        <div className="flex items-start w-full">
+          {/* Contact Avatar/Initial */}
+          <div className="w-12 h-12 rounded-lg bg-yellow-400 dark:bg-yellow-500 
+                        flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 
+                        border border-yellow-500 dark:border-yellow-600 shrink-0">
+            <span className="text-gray-900 font-semibold text-lg">
+              {contact.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
 
-        {/* Action Buttons */}
-        <div 
-          className={`
-            ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0 shrink-0
-            ${showActions ? 'opacity-100' : 'opacity-0 sm:opacity-0 group-hover:opacity-100'}
-            transition-opacity duration-200
-          `}
-          role="group"
-          aria-label="Contact actions"
-        >
-          <AuthActions>
-            {(isAuthenticated) => renderActions(isAuthenticated)}
-          </AuthActions>
-        </div>
-      </div>
-
-      {/* Contact Info */}
-      <div className={`flex-grow min-w-0 ${viewMode === 'list' ? 'sm:ml-4' : ''}`}>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-lg text-light truncate" title={contact.name}>
-            {contact.name}
-          </h3>
-          
-          <div className="space-y-1">
-            {contact.title && (
-              <p className="text-sm text-light/80 truncate" title={contact.title}>
-                {contact.title}
-              </p>
-            )}
-            
+          {/* Contact Info */}
+          <div className="flex-grow min-w-0">
+            <h3 className="text-gray-900 dark:text-gray-100 font-medium text-base mb-1 truncate">
+              {contact.name}
+            </h3>
             {contact.company && (
-              <p className="text-sm text-light/80 truncate" title={contact.company}>
+              <p className="text-gray-600 dark:text-gray-300 text-sm mb-1 truncate">
                 {contact.company}
               </p>
             )}
-          </div>
-
-          <div className="mt-3 space-y-2">
+            {contact.industry && (
+              <p className="text-gray-500 dark:text-gray-400 text-sm truncate">
+                {contact.industry}
+              </p>
+            )}
+            {contact.notes && viewMode === 'columns' && (
+              <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 line-clamp-3">
+                {contact.notes}
+              </p>
+            )}
+            {contact.tags && contact.tags.length > 0 && viewMode === 'columns' && (
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {contact.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium
+                             bg-gray-100 dark:bg-gray-700 
+                             text-gray-700 dark:text-gray-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             {contact.email && (
-              <Link
+              <Link 
                 href={`mailto:${contact.email}`}
-                className="text-sm text-gold hover:text-light flex items-center gap-1.5 transition-colors max-w-full"
-                title={contact.email}
+                className="text-gray-600 dark:text-gray-300 text-sm hover:text-yellow-600 
+                       dark:hover:text-yellow-400 truncate block mt-2"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                <span className="truncate">{contact.email}</span>
+                {contact.email}
               </Link>
             )}
-
             {contact.phone && (
-              <Link
+              <Link 
                 href={`tel:${contact.phone}`}
-                className="text-sm text-gold hover:text-light flex items-center gap-1.5 transition-colors max-w-full"
-                title={contact.phone}
+                className="text-gray-600 dark:text-gray-300 text-sm hover:text-yellow-600 
+                       dark:hover:text-yellow-400 truncate block mt-1"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                <span className="truncate">{contact.phone}</span>
+                {contact.phone}
               </Link>
             )}
           </div>
 
-          {contact.tags && contact.tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {contact.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-grey text-light border border-grey/30 truncate max-w-[150px]"
-                  title={tag}
+          {/* Action Buttons */}
+          <div 
+            className={`
+              ml-auto flex -mt-1 -mr-1 sm:mt-0 sm:mr-0 shrink-0
+              ${showActions ? 'opacity-100' : 'opacity-0 sm:opacity-0 group-hover:opacity-100'}
+              transition-opacity duration-200
+            `}
+            role="group"
+            aria-label="Contact actions"
+          >
+            <AuthActions>
+              {(isAuthenticated) => renderActions(isAuthenticated)}
+            </AuthActions>
+          </div>
+        </div>
+
+        {/* Additional Details - Only show in list view */}
+        {viewMode === 'list' && (
+          <div className="mt-2 sm:mt-0 sm:ml-16 text-sm space-y-1">
+            {contact.notes && (
+              <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
+                {contact.notes}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-2">
+              {contact.tags?.map((tag) => (
+                <span 
+                  key={tag}
+                  className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium
+                           bg-gray-100 dark:bg-gray-700 
+                           text-gray-700 dark:text-gray-300"
                 >
                   {tag}
                 </span>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </div>
+
+      <ContactModal
+        contact={contact}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 }
