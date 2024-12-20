@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Fragment } from 'react';
 import { ContactsData, Contact, SearchFilters, SortConfig } from '../types/contact';
 import ContactCard from '../components/ContactCard';
 import FinderToolbar from '../components/FinderToolbar';
@@ -148,11 +148,11 @@ export default function Home() {
       <FinderToolbar
         onViewChange={setViewMode}
         currentView={viewMode}
-        onSearch={handleSearch}
+        onSearch={setSearchQuery}
         onAddContact={handleAddContact}
         onFilterChange={handleFilterChange}
-        onSortChange={handleSortChange}
-        onGroupChange={handleGroupChange}
+        onSortChange={setSortConfig}
+        onGroupChange={setGroupBy}
         searchFilters={searchFilters}
         sortConfig={sortConfig}
         groupBy={groupBy}
@@ -163,7 +163,7 @@ export default function Home() {
         {viewMode === 'grid' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Object.entries(groupedContacts).map(([group, contacts]) => (
-              <React.Fragment key={group}>
+              <Fragment key={group}>
                 {groupBy && (
                   <div className="col-span-full mt-6 first:mt-0">
                     <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
@@ -180,7 +180,7 @@ export default function Home() {
                     onDelete={() => {}}
                   />
                 ))}
-              </React.Fragment>
+              </Fragment>
             ))}
           </div>
         )}
