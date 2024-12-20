@@ -5,13 +5,15 @@ interface IconButtonProps {
   children: React.ReactNode;
   className?: string;
   active?: boolean;
+  icon?: React.ReactNode;
 }
 
 export function IconButton({ 
   onClick, 
   children, 
   className = '',
-  active = false 
+  active = false,
+  icon
 }: IconButtonProps) {
   return (
     <button
@@ -22,6 +24,7 @@ export function IconButton({
         ${className}
       `}
     >
+      {icon}
       {children}
     </button>
   );
