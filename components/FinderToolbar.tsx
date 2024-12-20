@@ -50,18 +50,18 @@ export default function FinderToolbar({
 
   return (
     <div className="sticky top-0 z-50 backdrop-blur-md bg-[rgb(var(--background-secondary))]/80 border-b border-[rgb(var(--border))]">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 p-3">
-          <div className="flex items-center gap-2 min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center gap-3 p-3">
+          <div className="flex flex-wrap items-center gap-2 min-w-0 w-full sm:w-auto">
             <SearchBar 
               value={searchQuery}
               onChange={handleSearch}
               placeholder="Search..."
               isSearching={isSearching}
-              className="w-64"
+              className="w-full sm:w-64"
             />
             
-            <div className="h-6 w-px bg-[rgb(var(--border))]" />
+            <div className="hidden sm:block h-6 w-px bg-[rgb(var(--border))]" />
             
             <FilterControl
               filters={searchFilters}
@@ -69,18 +69,18 @@ export default function FinderToolbar({
             />
           </div>
 
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-2 ml-auto w-full sm:w-auto justify-end">
             <div className="flex items-center rounded-lg bg-[rgb(var(--background-primary))] p-1 border border-[rgb(var(--border))]">
               <GroupControl
                 value={groupBy}
                 onChange={onGroupChange}
               />
-              <div className="h-5 w-px mx-1 bg-[rgb(var(--border))]" />
+              <div className="hidden sm:block h-5 w-px mx-1 bg-[rgb(var(--border))]" />
               <ViewControl
                 currentView={currentView}
                 onViewChange={onViewChange}
               />
-              <div className="h-5 w-px mx-1 bg-[rgb(var(--border))]" />
+              <div className="hidden sm:block h-5 w-px mx-1 bg-[rgb(var(--border))]" />
               <SortControl
                 config={sortConfig}
                 onChange={onSortChange}
