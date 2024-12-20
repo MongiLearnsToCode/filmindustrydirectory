@@ -4,11 +4,12 @@ import type { ViewMode } from '../FinderToolbar';
 interface ViewControlProps {
   currentView: ViewMode;
   onViewChange: (view: ViewMode) => void;
+  className?: string;
 }
 
-export function ViewControl({ currentView, onViewChange }: ViewControlProps) {
+export function ViewControl({ currentView, onViewChange, className }: ViewControlProps) {
   return (
-    <div className="flex items-center">
+    <div className={`flex items-center ${className}`}>
       <button
         onClick={() => onViewChange('grid')}
         className={`p-1 rounded-md transition-colors duration-200
