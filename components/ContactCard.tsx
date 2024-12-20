@@ -222,7 +222,7 @@ export default function ContactCard({ contact, viewMode, onEdit, onDelete }: Con
             flex-direction: column;
             align-items: flex-start;
             padding: 0.5rem;
-            width: 95vw;
+            width: 100vw;
             margin: 0.25rem auto;
           }
           .contact-card > div {
